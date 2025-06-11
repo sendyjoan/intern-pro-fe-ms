@@ -10,6 +10,16 @@ import toast from './plugins/toast';
 const app = createApp(App)
 app.config.globalProperties.$axios = axios
 app.use(VueSweetalert2);
+router.beforeEach((to, from, next) => {
+  // Set the document title based on the route meta
+  if (to.meta.title) {
+    document.title = to.meta.title;
+  } else {
+    document.title = 'Default Title'; // Fallback title
+  }
+  next();
+}
+);
 app.use(router)
 app.use(toast);
 app.mount('#app')

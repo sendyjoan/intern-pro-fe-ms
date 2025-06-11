@@ -11,13 +11,13 @@
           <ul class="sidebar-menu">
               <li class="menu-header">Dashboard</li>
             <li class="active">
-                <router-link class="nav-link" to="/dashboard">
+                <router-link :key="$route.fullPath" class="nav-link" to="/dashboard">
                     <i class="fas fa-fire"></i> <span>Dashboard</span>
                 </router-link>
             </li>
               <li class="menu-header">Master Data</li>
                 <li class="">
-                    <router-link class="nav-link" to="/majority">
+                    <router-link :key="$route.fullPath" class="nav-link" to="/majority">
                         <i class="fas fa-fire"></i> <span>Majority</span>
                     </router-link>
                 </li>

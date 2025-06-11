@@ -71,6 +71,11 @@ export default {
   name: 'Dashboard',
   components: {
     AdminLayout
-  }
+  },
+    mounted() {
+        if (typeof window.initStisla === 'function') {
+            window.initStisla();
+        }
+    },
 }
 </script>
