@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
             <div class="login-brand">
-              <img ssrc="https://schooltech-file.s3.ap-southeast-2.amazonaws.com/logo-vertical-color.png" alt="logo" width="300" >
+              <Logo />
             </div>
 
             <div class="card card-primary">
@@ -48,9 +48,12 @@
 </template>
 
 <script>
-import Swal from "sweetalert2";
+import Logo from '../components/LogoAuth.vue';
 export default {
   name: 'Login',
+  components: {
+    Logo
+  },
   data()
   {
     return {
@@ -61,19 +64,9 @@ export default {
   },
   methods:{
     async login() {
-      console.log("Login called");
-
       if (this.username === "" || this.password === "") {
-        this.$swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'error',
-          title: 'Username dan Password Wajib Diisi!',
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-        });
-        return; // Penting: hentikan eksekusi jika input kosong
+        this.$toast("error", "Username and Password must be filled!");
+        return;
       }
 
       try {
@@ -86,41 +79,19 @@ export default {
         );
 
         if (result.status === 200) {
-          this.showSuccessSwal("Login Success");
+          this.$toast("success","Login Success");
           localStorage.setItem("token", JSON.stringify(result.data.token));
-          // Uncomment jika ingin redirect:
-          console.log('Running Router');
           this.$router.push('/about');
         } else {
-          this.showErrorSwal(result.data.message || 'Login gagal silahkan coba lagi!');
+          this.$toast("error", result.data.message || 'Login gagal silahkan coba lagi!');
         }
       } catch (error) {
         let message = error.response?.data?.message || 'Login gagal silahkan coba lagi!';
-        this.showErrorSwal(message);
+        this.$toast("error", message);
       }
     },
     forgot(){
       this.$router.push('/forgot-password');
-    },
-    showSuccessSwal(information){
-        this.$swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'success',
-            title: information,
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-        });
-    },
-    showErrorSwal($mess){
-      Swal.fire({
-        title: 'Error!',
-        text: $mess,
-        icon: 'error',
-        confirmButtonText: 'OK',
-        timer: 5000
-      })
     }
   }
 }

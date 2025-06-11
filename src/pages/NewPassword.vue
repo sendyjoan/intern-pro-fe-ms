@@ -5,30 +5,27 @@
         <div class="row">
           <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
             <div class="login-brand">
-              <Logo />
+              <Logo/>
             </div>
 
             <div class="card card-primary">
-              <div class="card-header"><h4>Forgot Password</h4></div>
+              <div class="card-header"><h4>Setting New Password</h4></div>
 
               <div class="card-body">
-                <form @submit.prevent="forgot" class="needs-validation" novalidate="">
+                <form @submit.prevent="verification" class="needs-validation" novalidate="">
                   <div class="form-group">
-                    <label for="username">Username</label>
-                    <input v-model="username" id="username" type="username" class="form-control" name="username" tabindex="1" required autofocus>
+                    <label for="password">New Password</label>
+                    <input v-model="password" id="password" type="password" class="form-control" name="password" tabindex="1" required autofocus>
+                  </div>
+                  <div class="form-group">
+                    <label for="confirm_password">Confirm New Password</label>
+                    <input v-model="confirm_password" id="confirm_password" type="password" class="form-control" name="confirm_password" tabindex="1" required autofocus>
                   </div>
                   <div class="row">
-                    <div class="col-6">
-                        <div class="form-group">
-                            <a @click="$router.push('/login')" class="btn btn-info btn-lg btn-block" tabindex="4">
-                            Back
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-6">
+                    <div class="col-12">
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
-                            Send OTP
+                            Verify OTP
                             </button>
                         </div>
                     </div>
@@ -50,21 +47,25 @@
 import Logo from '../components/LogoAuth.vue';
 export default {
   name: 'ForgotPassword',
-  components: {
-    Logo
-  },
+    components: {
+        Logo
+    },
   data()
   {
     return {
-        username:"",
+        password: "",
+        confirm_password: "",
         currentYear: new Date().getFullYear()
     }
   },
   methods:{
-    async forgot() {
-      if (this.username === "") {
-        this.$toast("error", "Username must be fill!");
+    async verification() {
+      if (this.password === "" || this.confirm_password === "") {
+        this.$toast("error", "Password and Confirm Password must be filled!");
         return; // Penting: hentikan eksekusi jika input kosong
+      } else if (this.password !== this.confirm_password) {
+        this.$toast("error", "Password and Confirm Password must be the same!");
+        return; // Penting: hentikan eksekusi jika input tidak sama
       }
 
       try {
@@ -85,8 +86,8 @@ export default {
         // } else {
         //   this.showErrorSwal(result.data.message || 'Login gagal silahkan coba lagi!');
         // }
-        this.$toast("success","OTP Sent Successfully");
-        this.$router.push('/otp-verification');
+        this.$toast("success","OTP Verification Success");
+        this.$router.push('/login');
       } catch (error) {
         let message = error.response?.data?.message || 'Login gagal silahkan coba lagi!';
         this.$toast("error", message);

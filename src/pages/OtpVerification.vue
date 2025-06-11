@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
             <div class="login-brand">
-              <img ssrc="https://schooltech-file.s3.ap-southeast-2.amazonaws.com/logo-vertical-color.png" alt="logo" width="300" >
+              <Logo/>
             </div>
 
             <div class="card card-primary">
@@ -40,8 +40,12 @@
 </template>
 
 <script>
+import Logo from '../components/LogoAuth.vue';
 export default {
   name: 'ForgotPassword',
+    components: {
+        Logo
+    },
   data()
   {
     return {
@@ -52,7 +56,7 @@ export default {
   methods:{
     async verification() {
       if (this.otp === "") {
-        this.toast("error", "OTP must be fill!");
+        this.$toast("error", "OTP must be fill!");
         return; // Penting: hentikan eksekusi jika input kosong
       }
 
@@ -74,24 +78,13 @@ export default {
         // } else {
         //   this.showErrorSwal(result.data.message || 'Login gagal silahkan coba lagi!');
         // }
-        this.toast("success","OTP Verification Success");
+        this.$toast("success","OTP Verification Success");
         this.$router.push('/new-password');
       } catch (error) {
         let message = error.response?.data?.message || 'Login gagal silahkan coba lagi!';
-        this.toast("error", message);
+        this.$toast("error", message);
       }
-    },
-    toast(status, message) {
-      this.$swal.fire({
-        toast: true,
-        position: 'top-end',
-        icon: status,
-        title: message,
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-      });
-    },
+    }
   }
 }
 </script>

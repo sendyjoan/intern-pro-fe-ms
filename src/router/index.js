@@ -1,16 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router';
-// import TheWelcome from './components/TheWelcome.vue';
+import NewPassword from '../pages/NewPassword.vue';
 import Login from '../pages/Login.vue';
-import Doremi from '../pages/Doremi.vue';
 import ForgotPssword from '../pages/ForgotPassword.vue';
 import OTPVerification from '../pages/OtpVerification.vue';
 
 const routes = [
   { path: '/', component: Login },
   { path: '/login', component: Login },
-  { path: '/about', component: Doremi },
   { path: '/forgot-password', component: ForgotPssword},
   { path: '/otp-verification', component: OTPVerification },
+  { path: '/new-password', component: NewPassword },
 ];
 
 

@@ -5,12 +5,13 @@ import App from './App.vue'
 import VueSweetalert2 from 'vue-sweetalert2';
 import router from './router';
 import axios from 'axios';
+import toast from './plugins/toast';
 
 const app = createApp(App)
 app.config.globalProperties.$axios = axios
 app.use(VueSweetalert2);
 app.use(router)
-// app.use(axios);
+app.use(toast);
 app.mount('#app')
 
 // createApp(App).mount('#app')
