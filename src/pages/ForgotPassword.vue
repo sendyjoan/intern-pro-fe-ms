@@ -9,30 +9,29 @@
             </div>
 
             <div class="card card-primary">
-              <div class="card-header"><h4>Login</h4></div>
+              <div class="card-header"><h4>Forgot Password</h4></div>
 
               <div class="card-body">
-                <form @submit.prevent="login" class="needs-validation" novalidate="">
+                <form @submit.prevent="forgot" class="needs-validation" novalidate="">
                   <div class="form-group">
                     <label for="username">Username</label>
                     <input v-model="username" id="username" type="username" class="form-control" name="username" tabindex="1" required autofocus>
                   </div>
-                  <div class="form-group">
-                    <div class="d-block">
-                    <label for="password" class="control-label">Password</label>
-                      <div class="float-right">
-                        <a v-on:click="forgot" href="#" class="text-small">
-                          Forgot Password?
-                        </a>
-                      </div>
+                  <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <a @click="$router.push('/login')" class="btn btn-info btn-lg btn-block" tabindex="4">
+                            Back
+                            </a>
+                        </div>
                     </div>
-                    <input v-model="password" id="password" type="password" class="form-control" name="password" tabindex="2" required>
-                  </div>
-
-                  <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
-                      Login
-                    </button>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
+                            Send OTP
+                            </button>
+                        </div>
+                    </div>
                   </div>
                 </form>
               </div>
@@ -51,17 +50,16 @@
 import axios from 'axios';
 import Swal from "sweetalert2";
 export default {
-  name: 'Login',
+  name: 'ForgotPassword',
   data()
   {
     return {
         username:"",
-        password:"",
         currentYear: new Date().getFullYear()
     }
   },
   methods:{
-    async login() {
+    async forgot() {
       console.log("Login called");
 
       if (this.username === "" || this.password === "") {
@@ -99,9 +97,6 @@ export default {
         let message = error.response?.data?.message || 'Login gagal silahkan coba lagi!';
         this.showErrorSwal(message);
       }
-    },
-    forgot(){
-      this.$router.push('/forgot-password');
     },
     showSuccessSwal(information){
         this.$swal.fire({
