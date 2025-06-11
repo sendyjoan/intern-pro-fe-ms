@@ -18,14 +18,7 @@
                     <input v-model="otp" id="otp" type="otp" class="form-control" name="otp" tabindex="1" required autofocus>
                   </div>
                   <div class="row">
-                    <div class="col-6">
-                        <div class="form-group">
-                            <a @click="$router.push('/login')" class="btn btn-info btn-lg btn-block" tabindex="4">
-                            Back
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-6">
+                    <div class="col-12">
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
                             Verify OTP
@@ -47,31 +40,19 @@
 </template>
 
 <script>
-import axios from 'axios';
-import Swal from "sweetalert2";
 export default {
   name: 'ForgotPassword',
   data()
   {
     return {
-        username:"",
+        otp:"",
         currentYear: new Date().getFullYear()
     }
   },
   methods:{
-    async forgot() {
-      console.log("Login called");
-
-      if (this.username === "") {
-        this.$swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'error',
-          title: 'Username Must be fill!',
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-        });
+    async verification() {
+      if (this.otp === "") {
+        this.toast("error", "OTP must be fill!");
         return; // Penting: hentikan eksekusi jika input kosong
       }
 
@@ -93,32 +74,24 @@ export default {
         // } else {
         //   this.showErrorSwal(result.data.message || 'Login gagal silahkan coba lagi!');
         // }
-        this.$router.push('/otp-verification');
+        this.toast("success","OTP Verification Success");
+        this.$router.push('/new-password');
       } catch (error) {
         let message = error.response?.data?.message || 'Login gagal silahkan coba lagi!';
-        this.showErrorSwal(message);
+        this.toast("error", message);
       }
     },
-    showSuccessSwal(information){
-        this.$swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'success',
-            title: information,
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-        });
+    toast(status, message) {
+      this.$swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: status,
+        title: message,
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
     },
-    showErrorSwal($mess){
-      Swal.fire({
-        title: 'Error!',
-        text: $mess,
-        icon: 'error',
-        confirmButtonText: 'OK',
-        timer: 5000
-      })
-    }
   }
 }
 </script>

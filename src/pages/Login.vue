@@ -48,7 +48,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import Swal from "sweetalert2";
 export default {
   name: 'Login',
@@ -78,7 +77,7 @@ export default {
       }
 
       try {
-        const result = await axios.post(
+        const result = await this.$axios.post(
           `${import.meta.env.VITE_AUTH_SERVICE}/auth/login`,
           {
             username: this.username,
