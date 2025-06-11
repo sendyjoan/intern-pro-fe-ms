@@ -81,7 +81,7 @@ export default {
         if (result.status === 200) {
           this.$toast("success","Login Success");
           localStorage.setItem("token", JSON.stringify(result.data.token));
-          this.$router.push('/about');
+          this.$router.push('/dashboard');
         } else {
           this.$toast("error", result.data.message || 'Login gagal silahkan coba lagi!');
         }
