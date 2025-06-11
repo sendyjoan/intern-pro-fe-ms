@@ -9,13 +9,13 @@
             </div>
 
             <div class="card card-primary">
-              <div class="card-header"><h4>Forgot Password</h4></div>
+              <div class="card-header"><h4>OTP Verification</h4></div>
 
               <div class="card-body">
-                <form @submit.prevent="forgot" class="needs-validation" novalidate="">
+                <form @submit.prevent="verification" class="needs-validation" novalidate="">
                   <div class="form-group">
-                    <label for="username">Username</label>
-                    <input v-model="username" id="username" type="username" class="form-control" name="username" tabindex="1" required autofocus>
+                    <label for="otp">OTP</label>
+                    <input v-model="otp" id="otp" type="otp" class="form-control" name="otp" tabindex="1" required autofocus>
                   </div>
                   <div class="row">
                     <div class="col-6">
@@ -28,7 +28,7 @@
                     <div class="col-6">
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
-                            Send OTP
+                            Verify OTP
                             </button>
                         </div>
                     </div>
