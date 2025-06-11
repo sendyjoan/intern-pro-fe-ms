@@ -35,24 +35,4 @@
 
     <!-- Page Specific JS File -->
   </body>
-  <script>
-  window.initStisla = function () {
-    if (typeof $ !== 'undefined') {
-      // Dropdown & tooltip
-      $('[data-toggle="tooltip"]').tooltip();
-      $('[data-toggle="dropdown"]').dropdown();
-
-      // Nice scroll
-      if ($.fn.niceScroll) {
-        $(".main-sidebar").niceScroll();
-
-        // atau sesuaikan dengan stisla init
-        $(".main-sidebar").getNiceScroll().resize();
-      }
-
-      // Inisialisasi ulang script.js / custom.js jika perlu
-      console.log("initStisla dijalankan");
-    }
-  }
-</script>
 </html>

@@ -66,16 +66,20 @@
 
 <script>
 import AdminLayout from '../components/admin/AdminLayout.vue'
-
+import { loadScript } from '@/plugins/loadScript';
 export default {
   name: 'Dashboard',
   components: {
     AdminLayout
   },
-    mounted() {
-        if (typeof window.initStisla === 'function') {
-            window.initStisla();
-        }
-    },
+    async mounted() {
+    try {
+      await loadScript('/assets/js/scripts.js');
+      await loadScript('/assets/js/custom.js');
+      console.log('Scripts loaded');
+    } catch (err) {
+      console.error('Failed to load script:', err);
+    }
+  }
 }
 </script>
