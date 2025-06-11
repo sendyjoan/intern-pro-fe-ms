@@ -4,6 +4,7 @@ import Login from '../pages/Login.vue';
 import ForgotPssword from '../pages/ForgotPassword.vue';
 import OTPVerification from '../pages/OtpVerification.vue';
 import Dashboard from '../pages/Dashboard.vue';
+import Majority from '../pages/Majority.vue';
 
 const routes = [
   { path: '/', component: Login },
@@ -11,7 +12,8 @@ const routes = [
   { path: '/forgot-password', component: ForgotPssword},
   { path: '/otp-verification', component: OTPVerification },
   { path: '/new-password', component: NewPassword },
-  { path: '/dashboard', component: Dashboard}
+  { path: '/dashboard', component: Dashboard},
+  { path: '/majority', component: Majority},
 ];
 
 
