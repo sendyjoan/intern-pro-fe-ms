@@ -68,27 +68,20 @@ export default {
       }
 
       try {
-        // const result = await axios.post(
-        //   `${import.meta.env.VITE_AUTH_SERVICE}/auth/login`,
-        //   {
-        //     username: this.username,
-        //     password: this.password
-        //   }
-        // );
-
-        // if (result.status === 200) {
-        //   this.showSuccessSwal("Login Success");
-        //   localStorage.setItem("token", JSON.stringify(result.data.token));
-        //   // Uncomment jika ingin redirect:
-        //   console.log('Running Router');
-        //   this.$router.push('/about');
-        // } else {
-        //   this.showErrorSwal(result.data.message || 'Login gagal silahkan coba lagi!');
-        // }
-        this.$toast("success","OTP Sent Successfully");
-        this.$router.push('/otp-verification');
+        const result = await this.$axios.post(
+          `${import.meta.env.VITE_AUTH_SERVICE}/auth/generate-otp`,
+          {
+            username: this.username,
+          }
+        );
+        if (result.status === 200) {
+          this.$toast("success", "OTP has been sent to your email!");
+          this.$router.push('/otp-verification');
+        } else {
+          this.$toast("error", "Failed to send OTP, please try again!");
+        }
       } catch (error) {
-        let message = error.response?.data?.message || 'Login gagal silahkan coba lagi!';
+        let message = error.response?.data?.message || 'Failed to send OTP, please try again!';
         this.$toast("error", message);
       }
     }
