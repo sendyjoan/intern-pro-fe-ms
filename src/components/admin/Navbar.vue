@@ -73,9 +73,9 @@
             <div class="d-sm-none d-lg-inline-block">Hi, Ujang Maman</div></a>
             <div class="dropdown-menu dropdown-menu-right">
               <div class="dropdown-title">Logged in 5 min ago</div>
-              <a href="features-profile.html" class="dropdown-item has-icon">
+              <router-link to="/profile" class="dropdown-item has-icon">
                 <i class="far fa-user"></i> Profile
-              </a>
+              </router-link>
               <a href="features-activities.html" class="dropdown-item has-icon">
                 <i class="fas fa-bolt"></i> Activities
               </a>
@@ -98,8 +98,10 @@ export default {
   methods: {
     logout() {
         console.log("Logging out...");
+        // delete localStorage token or user data
+        localStorage.removeItem('token');
         this.$router.push('/login');
-      // Implement logout logic
+        // Implement logout logic
     }
   }
 }

@@ -5,6 +5,7 @@ import ForgotPssword from '../pages/ForgotPassword.vue';
 import OTPVerification from '../pages/OtpVerification.vue';
 import Dashboard from '../pages/Dashboard.vue';
 import Majority from '../pages/Majority.vue';
+import Profile from '../pages/Profile.vue';
 
 const routes = [
   { path: '/', component: Login, meta: {
@@ -20,6 +21,9 @@ const routes = [
       title: 'Dashboard - Admin'
     }},
   { path: '/majority', component: Majority},
+    {path: '/profile', name: 'profile', component: Profile, meta: {
+            title: 'Profile - Intenrpro'
+        }}
 ];
 
 

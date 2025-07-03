@@ -82,7 +82,9 @@ export default {
           this.$toast("success","Login Success");
           localStorage.setItem("token", JSON.stringify(result.data.token));
           this.$router.push('/dashboard');
-        } else {
+        } else if (result.status === 429){
+          this.$toast("error", result.data.message || 'Login gagal silahkan coba lagi!');
+        }else{
           this.$toast("error", result.data.message || 'Login gagal silahkan coba lagi!');
         }
       } catch (error) {

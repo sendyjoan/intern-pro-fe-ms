@@ -69,16 +69,16 @@ export default {
 
       try {
         const result = await this.$axios.post(
-          `${import.meta.env.VITE_AUTH_SERVICE}/auth/generate-otp`,
+          `${import.meta.env.VITE_AUTH_SERVICE}/auth/forgot-password`,
           {
             username: this.username,
           }
         );
-        if (result.status === 200) {
+        if (result.status === 200 && result.data.success) {
           this.$toast("success", "OTP has been sent to your email!");
           this.$router.push('/otp-verification');
         } else {
-          this.$toast("error", "Failed to send OTP, please try again!");
+          this.$toast("error", result.data.message);
         }
       } catch (error) {
         let message = error.response?.data?.message || 'Failed to send OTP, please try again!';
