@@ -25,7 +25,7 @@
                     <div class="col-12">
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
-                            Verify OTP
+                            Change Password
                             </button>
                         </div>
                     </div>
@@ -45,6 +45,7 @@
 
 <script>
 import Logo from '../components/LogoAuth.vue';
+import axios from 'axios';
 export default {
   name: 'ForgotPassword',
     components: {
@@ -60,36 +61,37 @@ export default {
   },
   methods:{
     async verification() {
-      if (this.password === "" || this.confirm_password === "") {
-        this.$toast("error", "Password and Confirm Password must be filled!");
-        return; // Penting: hentikan eksekusi jika input kosong
-      } else if (this.password !== this.confirm_password) {
-        this.$toast("error", "Password and Confirm Password must be the same!");
-        return; // Penting: hentikan eksekusi jika input tidak sama
-      }
+      try{
+        const otp = localStorage.getItem('otp');
+        if (this.password === "" || this.confirm_password === "") {
+          this.$toast("error", "Password and Confirm Password must be filled!");
+          return; // Penting: hentikan eksekusi jika input kosong
+        } else if (this.password !== this.confirm_password) {
+          this.$toast("error", "Password and Confirm Password must be the same!");
+          return; // Penting: hentikan eksekusi jika input tidak sama
+        }
 
-      try {
-        // const result = await axios.post(
-        //   `${import.meta.env.VITE_AUTH_SERVICE}/auth/login`,
-        //   {
-        //     username: this.username,
-        //     password: this.password
-        //   }
-        // );
+        // try {
+        const result = await axios.post(
+            `${import.meta.env.VITE_AUTH_SERVICE}/auth/update-password`,
+            {
+              otp: otp,
+              password: this.password,
+              confirm_password: this.confirm_password
+            }
+        );
 
-        // if (result.status === 200) {
-        //   this.showSuccessSwal("Login Success");
-        //   localStorage.setItem("token", JSON.stringify(result.data.token));
-        //   // Uncomment jika ingin redirect:
-        //   console.log('Running Router');
-        //   this.$router.push('/about');
-        // } else {
-        //   this.showErrorSwal(result.data.message || 'Login gagal silahkan coba lagi!');
-        // }
-        this.$toast("success","OTP Verification Success");
-        this.$router.push('/login');
-      } catch (error) {
-        let message = error.response?.data?.message || 'Login gagal silahkan coba lagi!';
+        if (result.status === 200 && result.data.success) {
+          this.$toast("success", "Password has been changed successfully!");
+          localStorage.removeItem('otp'); // Hapus OTP setelah berhasil
+          // Uncomment jika ingin redirect:
+          console.log('Running Router');
+          this.$router.push('/login');
+        } else {
+          this.$toast("success", result.data.message || 'Failed to change password, please try again!');
+        }
+      }catch (error) {
+        let message = error.response?.data?.message || 'Failed to change password, please try again!';
         this.$toast("error", message);
       }
     }

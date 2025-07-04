@@ -8,28 +8,51 @@ import Majority from '../pages/Majority.vue';
 import Profile from '../pages/Profile.vue';
 
 const routes = [
-  { path: '/', component: Login, meta: {
-      title: 'Internpro - Login'
-    } },
-  { path: '/login', component: Login, meta: {
-      title: 'Internpro - Login'
-    } },
-  { path: '/forgot-password', component: ForgotPssword},
-  { path: '/otp-verification', component: OTPVerification },
-  { path: '/new-password', component: NewPassword },
-  { path: '/dashboard', component: Dashboard, meta: {
-      title: 'Dashboard - Admin'
-    }},
-  { path: '/majority', component: Majority},
-    {path: '/profile', name: 'profile', component: Profile, meta: {
-            title: 'Profile - Intenrpro'
-        }}
+    { path: '/', component: Login, name: 'Login', meta: { title: 'Internpro - Login' } },
+    { path: '/login', component: Login, meta: { title: 'Internpro - Login' } },
+    { path: '/forgot-password', component: ForgotPssword, meta: { title: 'Internpro - Forgot Password' } },
+    { path: '/otp-verification', component: OTPVerification, meta: { title: 'Internpro - OTP Verification' } },
+    { path: '/new-password', component: NewPassword, meta: { title: 'Internpro - Reset Password', requiredOtp: true } },
+    { path: '/dashboard', component: Dashboard, meta: { title: 'Internpro - Dashboard', requiredToken: true } },
+    { path: '/majority', component: Majority, meta: { title: 'Internpro - Majority Management' } },
+    { path: '/profile', name: 'profile', component: Profile, meta: { title: 'Profile - Internpro', requiredToken: true } }
 ];
 
-
 const router = createRouter({
-  history: createWebHistory(),  // Menyediakan mode history untuk URL yang bersih
-  routes,  // Daftar route
+    history: createWebHistory(),
+    routes,
+});
+
+router.beforeEach(async (to, from, next) => {
+    const otp = localStorage.getItem('otp');
+    const token = localStorage.getItem('token');
+
+    if (to.meta.requiredOtp && !otp) {
+        return next({ name: 'Login' });
+    }
+
+    if (to.meta.requiredToken && !token) {
+        return next({ name: 'Login' });
+    }
+
+    if (to.meta.requiredToken && token) {
+        try {
+            const validation = await fetch(`${import.meta.env.VITE_AUTH_SERVICE}/auth/validate-token`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json'
+                }
+            });
+            if (!validation.ok) throw new Error('Invalid token');
+            return next();
+        } catch (error) {
+            console.error('Token validation failed:', error);
+            localStorage.removeItem('token');
+            return next({ name: 'Login' });
+        }
+    }
+    next();
 });
 
 export default router;

@@ -41,6 +41,7 @@
 
 <script>
 import Logo from '../components/LogoAuth.vue';
+import axios from 'axios';
 export default {
   name: 'ForgotPassword',
     components: {
@@ -55,34 +56,30 @@ export default {
   },
   methods:{
     async verification() {
-      if (this.otp === "") {
-        this.$toast("error", "OTP must be fill!");
-        return; // Penting: hentikan eksekusi jika input kosong
-      }
-
       try {
-        // const result = await axios.post(
-        //   `${import.meta.env.VITE_AUTH_SERVICE}/auth/login`,
-        //   {
-        //     username: this.username,
-        //     password: this.password
-        //   }
-        // );
+        if (this.otp === "") {
+          this.$toast("error", "OTP must be fill!");
+          return; // Penting: hentikan eksekusi jika input kosong
+        }
 
-        // if (result.status === 200) {
-        //   this.showSuccessSwal("Login Success");
-        //   localStorage.setItem("token", JSON.stringify(result.data.token));
-        //   // Uncomment jika ingin redirect:
-        //   console.log('Running Router');
-        //   this.$router.push('/about');
-        // } else {
-        //   this.showErrorSwal(result.data.message || 'Login gagal silahkan coba lagi!');
-        // }
-        this.$toast("success","OTP Verification Success");
-        this.$router.push('/new-password');
-      } catch (error) {
-        let message = error.response?.data?.message || 'Login gagal silahkan coba lagi!';
-        this.$toast("error", message);
+        const result = await axios.post(
+            `${import.meta.env.VITE_AUTH_SERVICE}/auth/otp-validation`,
+            {
+              otp: this.otp
+            }
+        );
+        console.log(result);
+        if (result.status === 200 && result.data.success) {
+          localStorage.setItem("otp", this.otp);
+          // Uncomment jika ingin redirect:
+          this.$toast("success","OTP Verification Success");
+          this.$router.push('/new-password');
+        } else {
+          this.$toast("error", result.data.message || 'OTP verification failed!');
+        }
+      }catch (error) {
+        this.$toast("error", "An error occurred during OTP verification.");
+        console.error("Error during OTP verification:", error);
       }
     }
   }
