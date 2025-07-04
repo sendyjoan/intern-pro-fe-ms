@@ -38,7 +38,7 @@ router.beforeEach(async (to, from, next) => {
 
     if (to.meta.requiredToken && token) {
         try {
-            const response = await axios.get(
+            const response = await axios.post(
                 `${import.meta.env.VITE_AUTH_SERVICE}/auth/validate-token`,
                 {
                     headers: {
