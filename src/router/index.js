@@ -6,6 +6,7 @@ import OTPVerification from '../pages/OtpVerification.vue';
 import Dashboard from '../pages/Dashboard.vue';
 import Majority from '../pages/Majority.vue';
 import Profile from '../pages/Profile.vue';
+import axios from 'axios';
 
 const routes = [
     { path: '/', component: Login, name: 'Login', meta: { title: 'Internpro - Login' } },
@@ -37,14 +38,18 @@ router.beforeEach(async (to, from, next) => {
 
     if (to.meta.requiredToken && token) {
         try {
-            const validation = await fetch(`${import.meta.env.VITE_AUTH_SERVICE}/auth/validate-token`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Accept': 'application/json'
+            const response = await axios.get(
+                `${import.meta.env.VITE_AUTH_SERVICE}/auth/validate-token`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        Accept: 'application/json'
+                    }
                 }
-            });
-            if (!validation.ok) throw new Error('Invalid token');
+            )
+            if (response.status !== 200) {
+                throw new Error('Token validation failed');
+            }
             return next();
         } catch (error) {
             console.error('Token validation failed:', error);
