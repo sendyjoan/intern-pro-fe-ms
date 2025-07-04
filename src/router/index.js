@@ -38,19 +38,19 @@ router.beforeEach(async (to, from, next) => {
 
     if (to.meta.requiredToken && token) {
         try {
-            const response = await axios.post(
-                `${import.meta.env.VITE_AUTH_SERVICE}/auth/validate-token`,
-                {}, // <== ini body request, kosong kalau tidak ada
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        Accept: 'application/json'
-                    }
-                }
-            );
-            if (response.status !== 200) {
-                throw new Error('Token validation failed');
-            }
+            // const response = await axios.post(
+            //     `${import.meta.env.VITE_AUTH_SERVICE}/auth/validate-token`,
+            //     {}, // <== ini body request, kosong kalau tidak ada
+            //     {
+            //         headers: {
+            //             Authorization: `Bearer ${token}`,
+            //             Accept: 'application/json'
+            //         }
+            //     }
+            // );
+            // if (response.status !== 200) {
+            //     throw new Error('Token validation failed');
+            // }
             return next();
         } catch (error) {
             console.error('Token validation failed:', error);
